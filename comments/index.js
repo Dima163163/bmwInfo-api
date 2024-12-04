@@ -28,27 +28,31 @@ commentsRouter.get('/', (req, res) => {
 
 commentsRouter.post('/:carId', (req, res) => {
   const body = req.body;
-  const carId = req.params?.carId;
-  let car = null;
-  let newComment = {};
+  if (req.params) {
+    const carId = req.params?.carId;
+    let car = null;
+    let newComment = {};
 
-  if (carId) {
-    car = cars.find((car) => car.id === carId);
+    if (carId) {
+      car = cars.find((car) => car.id === carId);
 
-    if (car && body) {
-      const newCommentId = getUniqueId();
+      if (car && body) {
+        const newCommentId = getUniqueId();
 
-      newComment = {
-        ...body,
-        id: newCommentId
-      };
+        newComment = {
+          ...body,
+          id: newCommentId
+        };
 
-      car.comments.push(newCommentId);
-      comments.push(newComment);
+        car.comments.push(newCommentId);
+        comments.push(newComment);
 
-      res.status(200).json(newComment);
+        res.status(200).json(newComment);
+      } else {
+        res.status(400).json('Ошибка, такого автомобиля нет');
+      }
     } else {
-      res.status(400).json('Ошибка, такого автомобиля нет');
+      res.status(400).json('Параметры не переданы');
     }
   }
 });
