@@ -1,6 +1,6 @@
 const express = require('express');
 const commentsRouter = express.Router();
-const { v4: uuidv4 } = require('uuid');
+const { getUniqueId } = require('../utils/utils');
 
 const cars = require('../mock/cars');
 const comments = require('../mock/comments');
@@ -36,7 +36,7 @@ commentsRouter.post('/:carId', (req, res) => {
     car = cars.find((car) => car.id === carId);
 
     if (car && body) {
-      const newCommentId = uuidv4();
+      const newCommentId = getUniqueId();
 
       newComment = {
         ...body,
@@ -64,8 +64,7 @@ commentsRouter.delete('/:carId/:commentId', (req, res) => {
         const carDeletCommentIndex = car.comments.findIndex(commentItem => commentItem === commentId);
         comments.splice(deleteComentIndex, 1);
         car.comments.splice(carDeletCommentIndex, 1);
-        console.log('car', car);
-        console.log('comments', comments);
+
         res.status(200).json('Комментарий удален')
 
       }

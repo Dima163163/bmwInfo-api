@@ -1,6 +1,6 @@
 const express = require('express');
 const usersRouter = express.Router();
-const { v4: uuidv4 } = require('uuid');
+const { getUniqueId } = require('../utils/utils');
 const bcrypt = require('bcrypt');
 
 const users = require('../mock/users');
@@ -44,7 +44,7 @@ usersRouter.post('/registration', (req, res) => {
     const body = req.body;
     const user = users.find((user) => user.email === body.email);
     if (!user) {
-      const userId = uuidv4();
+      const userId = getUniqueId();
       const userPasswordHash = bcrypt.hashSync(req.body.password, 10);
 
       const newUser = {
