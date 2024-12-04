@@ -84,18 +84,22 @@ commentsRouter.delete('/:carId/:commentId', (req, res) => {
 
 commentsRouter.patch('/:commentId', (req, res) => {
   const body = req.body;
-  const id = req.params?.commentId;
+  if (req.params && req.params.commentId) {
+    const id = req.params.commentId;
 
-  if (id) {
-    const commentIndex = comments.findIndex((comment) => comment.id === id);
-    if (commentIndex !== -1) {
-      comments[commentIndex] = {
-        ...comments[commentIndex],
-        ...body
-      };
-      res.status(200).json(comments[commentIndex]);
+    if (id) {
+      const commentIndex = comments.findIndex((comment) => comment.id === id);
+      if (commentIndex !== -1) {
+        comments[commentIndex] = {
+          ...comments[commentIndex],
+          ...body
+        };
+        res.status(200).json(comments[commentIndex]);
+      } else {
+        res.status(400).json('Такого комментария нет');
+      }
     } else {
-      res.status(400).json('Такого комментария нет');
+      res.status(400).json('Id комментария не получен');
     }
   } else {
     res.status(400).json('Id комментария не получен');
