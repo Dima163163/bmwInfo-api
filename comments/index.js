@@ -28,8 +28,8 @@ commentsRouter.get('/', (req, res) => {
 
 commentsRouter.post('/:carId', (req, res) => {
   const body = req.body;
-  if (req.params) {
-    const carId = req.params?.carId;
+  if (req.params && eq.params.carId) {
+    const carId = req.params.carId;
     let car = null;
     let newComment = {};
 
